@@ -1,0 +1,63 @@
+<script>
+    const pdfFiles = [
+        { id: 1, title: "عرض تقديمي بلا عنوان", description: "ملف عرض تقديمي عام للمدرسة.", size: "غير محدد", uploadDate: "2024-01-01", fileName: "عرض تقديمي بلا عنوان .pdf" },
+        { id: 2, title: "تعلم بصحة", description: "ملف حول الصحة والتعلم السليم.", size: "غير محدد", uploadDate: "2024-01-02", fileName: "تعلم بصحة.pdf" },
+        { id: 3, title: "اخطاء في الاسعافات الاولية", description: "ملف تعليمي عن أخطاء الإسعافات الأولية.", size: "غير محدد", uploadDate: "2024-01-03", fileName: "اخطاء في الاسعافات الاولية.pdf" }
+    ];
+
+    function displayFiles(files = pdfFiles) {
+        const filesGrid = document.getElementById('filesGrid');
+        filesGrid.innerHTML = '';
+        files.forEach(file => {
+            const fileCard = document.createElement('div');
+            fileCard.className = 'file-card';
+            fileCard.innerHTML = `
+                <div class="file-icon">📊</div>
+                <h3>${file.title}</h3>
+                <p>${file.description}</p>
+                <div style="margin: 1rem 0; color: #666; font-size: 0.9rem;">
+                    <strong>الحجم:</strong> ${file.size} | 
+                    <strong>التاريخ:</strong> ${file.uploadDate}
+                </div>
+                <button class="download-btn" onclick="downloadFile('${file.fileName}')">
+                    تحميل الملف
+                </button>
+            `;
+            filesGrid.appendChild(fileCard);
+
+            setTimeout(() => {
+                fileCard.style.opacity = '1';
+                fileCard.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    }
+
+    function downloadFile(fileName) {
+        const link = document.createElement('a');
+        link.href = fileName; // تحميل من الجذر مباشرة
+        link.download = fileName;
+        link.click();
+
+        const messageDiv = document.getElementById('message');
+        messageDiv.style.display = 'block';
+        messageDiv.className = 'alert success';
+        messageDiv.textContent = `تم بدء تحميل الملف: ${fileName}`;
+
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim();
+        const filteredFiles = pdfFiles.filter(file => 
+            file.title.includes(query) || file.description.includes(query)
+        );
+        displayFiles(filteredFiles);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        displayFiles();
+    });
+</script>
