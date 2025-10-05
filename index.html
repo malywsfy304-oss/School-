@@ -100,18 +100,40 @@
             text-align: center;
             font-size: 2.5rem;
             color: #1a5d1a;
-            margin-bottom: 3rem;
+            margin-bottom: 1.5rem;
             position: relative;
         }
 
         .files-section h2::after {
             content: '';
             display: block;
-            width: 100px;
+            width: 120px;
             height: 4px;
             background: linear-gradient(90deg, #1a5d1a, #2d8b2d);
             margin: 1rem auto;
             border-radius: 2px;
+        }
+
+        /* شريط البحث */
+        .search-box {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 80%;
+            max-width: 400px;
+            padding: 0.8rem 1rem;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #1a5d1a;
+            box-shadow: 0 0 10px rgba(26,93,26,0.2);
         }
 
         .files-grid {
@@ -127,10 +149,12 @@
             border-radius: 12px;
             padding: 2rem;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
         .file-card::before {
@@ -139,13 +163,13 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 5px;
             background: linear-gradient(90deg, #1a5d1a, #2d8b2d);
         }
 
         .file-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             border-color: #1a5d1a;
         }
 
@@ -157,13 +181,13 @@
 
         .file-card h3 {
             color: #1a5d1a;
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
         }
 
         .file-card p {
             color: #666;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-size: 0.95rem;
         }
 
@@ -185,6 +209,22 @@
             box-shadow: 0 5px 15px rgba(26, 93, 26, 0.3);
         }
 
+        /* رسالة التنبيه */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
         /* الفوتر */
         footer {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
@@ -199,22 +239,6 @@
             opacity: 0.9;
         }
 
-        /* رسائل التنبيه */
-        .alert {
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .alert.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        /* responsive */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -258,16 +282,21 @@
         </div>
     </header>
 
-    <!-
- قسم الملفات -->
-    <section class="files-section">
+    <!-- قسم الملفات -->
+    <section class="files-section" id="files">
         <div class="container">
             <h2>ملفات PDF للإنجازات والأعمال</h2>
-            
+
+            <!-- شريط البحث -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="ابحث عن ملف...">
+            </div>
+
+            <!-- رسالة التنبيه -->
             <div id="message" class="alert" style="display: none;"></div>
-            
+
             <div class="files-grid" id="filesGrid">
-                <!-- الملفات تضاف هنا بالجافاسكريبت -->
+                <!-- الملفات ستضاف هنا بواسطة الجافاسكريبت -->
             </div>
         </div>
     </section>
@@ -280,63 +309,24 @@
     </footer>
 
     <script>
-        // بيانات الملفات
+        // ------------------------------
+        // 🔹 تعديل أسماء الملفات وحجمها هنا
+        // ------------------------------
         const pdfFiles = [
-            {
-                id: 1,
-                title: "تقرير الإنجازات السنوي",
-                description: "تقرير شامل عن إنجازات المدرسة للعام الدراسي الحالي",
-                size: "2.4 MB",
-                uploadDate: "2024-01-15",
-                fileName: "annual_report.pdf"
-            },
-            {
-                id: 2,
-                title: "الأعمال الفنية للطلاب",
-                description: "مجموعة من الأعمال الفنية المتميزة لطلاب المدرسة",
-                size: "1.8 MB",
-                uploadDate: "2024-01-10",
-                fileName: "art_works.pdf"
-            },
-            {
-                id: 3,
-                title: "المشاريع العلمية",
-                description: "أبرز المشاريع العلمية والبحثية المقدمة من الطلاب",
-                size: "3.1 MB",
-                uploadDate: "2024-01-08",
-                fileName: "science_projects.pdf"
-            },
-            {
-                id: 4,
-                title: "الأنشطة الرياضية",
-                description: "تقرير مصور عن الأنشطة والفعاليات الرياضية",
-                size: "4.2 MB",
-                uploadDate: "2024-01-05",
-                fileName: "sports_activities.pdf"
-            },
-            {
-                id: 5,
-                title: "الإبداعات الأدبية",
-                description: "مجموعة من الإبداعات الأدبية والقصص المميزة",
-                size: "1.5 MB",
-                uploadDate: "2024-01-03",
-                fileName: "literary_works.pdf"
-            },
-            {
-                id: 6,
-                title: "التقارير الشهرية",
-                description: "حزمة التقارير الشهرية لأنشطة المدرسة",
-                size: "5.7 MB",
-                uploadDate: "2024-01-01",
-                fileName: "monthly_reports.pdf"
-            }
+            { id: 1, title: "تقرير الإنجازات السنوي", description: "تقرير شامل عن إنجازات المدرسة للعام الدراسي الحالي", size: "2.4 MB", uploadDate: "2024-01-15", fileName: "annual_report.pdf" },
+            { id: 2, title: "الأعمال الفنية للطلاب", description: "مجموعة من الأعمال الفنية المتميزة لطلاب المدرسة", size: "1.8 MB", uploadDate: "2024-01-10", fileName: "art_works.pdf" },
+            { id: 3, title: "المشاريع العلمية", description: "أبرز المشاريع العلمية والبحثية المقدمة من الطلاب", size: "3.1 MB", uploadDate: "2024-01-08", fileName: "science_projects.pdf" },
+            { id: 4, title: "الأنشطة الرياضية", description: "تقرير مصور عن الأنشطة والفعاليات الرياضية", size: "4.2 MB", uploadDate: "2024-01-05", fileName: "sports_activities.pdf" },
+            { id: 5, title: "الإبداعات الأدبية", description: "مجموعة من الإبداعات الأدبية والقصص المميزة", size: "1.5 MB", uploadDate: "2024-01-03", fileName: "literary_works.pdf" },
+            { id: 6, title: "التقارير الشهرية", description: "حزمة التقارير الشهرية لأنشطة المدرسة", size: "5.7 MB", uploadDate: "2024-01-01", fileName: "monthly_reports.pdf" }
         ];
 
-        // دالة لعرض الملفات
-        function displayFiles() {
+        // دالة عرض الملفات
+        function displayFiles(files = pdfFiles) {
             const filesGrid = document.getElementById('filesGrid');
-            
-            pdfFiles.forEach(file => {
+            filesGrid.innerHTML = ''; // مسح أي ملفات سابقة
+
+            files.forEach(file => {
                 const fileCard = document.createElement('div');
                 fileCard.className = 'file-card';
                 fileCard.innerHTML = `
@@ -352,58 +342,45 @@
                     </button>
                 `;
                 filesGrid.appendChild(fileCard);
+
+                // إضافة تأثير الدخول للانيميشن
+                setTimeout(() => {
+                    fileCard.style.opacity = '1';
+                    fileCard.style.transform = 'translateY(0)';
+                }, 100);
             });
         }
 
-        // دالة محاكاة التحميل
+        // دالة تحميل الملف فعلياً
         function downloadFile(fileName) {
+            const link = document.createElement('a');
+            link.href = `files/${fileName}`; // ضع ملفات PDF داخل مجلد "files"
+            link.download = fileName;
+            link.click();
+
             const messageDiv = document.getElementById('message');
             messageDiv.style.display = 'block';
             messageDiv.className = 'alert success';
-            messageDiv.textContent = `جاري تحميل الملف: ${fileName} ... (هذه محاكاة للتحميل)`;
-            
-            // إخفاء الرسالة بعد 3 ثوان
+            messageDiv.textContent = `تم بدء تحميل الملف: ${fileName}`;
+
             setTimeout(() => {
                 messageDiv.style.display = 'none';
             }, 3000);
         }
 
-        // دالة البحث (يمكن إضافتها لاحقاً)
-        function searchFiles(query) {
+        // دالة البحث المباشر
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
             const filteredFiles = pdfFiles.filter(file => 
                 file.title.includes(query) || file.description.includes(query)
             );
-            return filteredFiles;
-        }
+            displayFiles(filteredFiles);
+        });
 
-        // تهيئة الصفحة عند التحميل
-        document.addEventListener('DOMContentLoaded', function() {
+        // عرض الملفات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
             displayFiles();
-            
-            // إضافة تأثيرات عند التمرير
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            // مراقبة عناصر الملفات
-            setTimeout(() => {
-                document.querySelectorAll('.file-card').forEach(card => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                    observer.observe(card);
-                });
-            }, 100);
         });
     </script>
 </body>
