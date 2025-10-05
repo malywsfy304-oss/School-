@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثانوية الأمير مقرن بن عبدالعزيز</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* الهيدر */
+        header {
+            background: linear-gradient(135deg, #1a5d1a 0%, #2d8b2d 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logo p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* قسم الملفات */
+        .files-section {
+            padding: 4rem 0;
+            background: white;
+            margin: 2rem auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            max-width: 95%;
+        }
+
+        .files-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a5d1a;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .files-section h2::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #1a5d1a, #2d8b2d);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+
+        .file-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1a5d1a, #2d8b2d);
+        }
+
+        .file-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: #1a5d1a;
+        }
+
+        .file-icon {
+            font-size: 3rem;
+            color: #1a5d1a;
+            margin-bottom: 1rem;
+        }
+
+        .file-card h3 {
+            color: #1a5d1a;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #1a5d1a 0%, #2d8b2d 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(26, 93, 26, 0.3);
+        }
+
+        /* الفوتر */
+        footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* رسائل التنبيه */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .files-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>ثانوية الأمير مقرن بن عبدالعزيز</h1>
+                    <p>عرض إنجازات وأعمال المدرسة</p>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#achievements">الإنجازات</a></li>
+                        <li><a href="#files">ملفات PDF</a></li>
+                        <li><a href="#contact">اتصل بنا</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-
+ قسم الملفات -->
+    <section class="files-section">
+        <div class="container">
+            <h2>ملفات PDF للإنجازات والأعمال</h2>
+            
+            <div id="message" class="alert" style="display: none;"></div>
+            
+            <div class="files-grid" id="filesGrid">
+                <!-- الملفات تضاف هنا بالجافاسكريبت -->
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <p>تصميم: محمد عبد السلام اليوسفي - ثانوية الأمير مقرن بن عبدالعزيز</p>
+        </div>
+    </footer>
+
+    <script>
+        // بيانات الملفات
+        const pdfFiles = [
+            {
+                id: 1,
+                title: "تقرير الإنجازات السنوي",
+                description: "تقرير شامل عن إنجازات المدرسة للعام الدراسي الحالي",
+                size: "2.4 MB",
+                uploadDate: "2024-01-15",
+                fileName: "annual_report.pdf"
+            },
+            {
+                id: 2,
+                title: "الأعمال الفنية للطلاب",
+                description: "مجموعة من الأعمال الفنية المتميزة لطلاب المدرسة",
+                size: "1.8 MB",
+                uploadDate: "2024-01-10",
+                fileName: "art_works.pdf"
+            },
+            {
+                id: 3,
+                title: "المشاريع العلمية",
+                description: "أبرز المشاريع العلمية والبحثية المقدمة من الطلاب",
+                size: "3.1 MB",
+                uploadDate: "2024-01-08",
+                fileName: "science_projects.pdf"
+            },
+            {
+                id: 4,
+                title: "الأنشطة الرياضية",
+                description: "تقرير مصور عن الأنشطة والفعاليات الرياضية",
+                size: "4.2 MB",
+                uploadDate: "2024-01-05",
+                fileName: "sports_activities.pdf"
+            },
+            {
+                id: 5,
+                title: "الإبداعات الأدبية",
+                description: "مجموعة من الإبداعات الأدبية والقصص المميزة",
+                size: "1.5 MB",
+                uploadDate: "2024-01-03",
+                fileName: "literary_works.pdf"
+            },
+            {
+                id: 6,
+                title: "التقارير الشهرية",
+                description: "حزمة التقارير الشهرية لأنشطة المدرسة",
+                size: "5.7 MB",
+                uploadDate: "2024-01-01",
+                fileName: "monthly_reports.pdf"
+            }
+        ];
+
+        // دالة لعرض الملفات
+        function displayFiles() {
+            const filesGrid = document.getElementById('filesGrid');
+            
+            pdfFiles.forEach(file => {
+                const fileCard = document.createElement('div');
+                fileCard.className = 'file-card';
+                fileCard.innerHTML = `
+                    <div class="file-icon">📊</div>
+                    <h3>${file.title}</h3>
+                    <p>${file.description}</p>
+                    <div style="margin: 1rem 0; color: #666; font-size: 0.9rem;">
+                        <strong>الحجم:</strong> ${file.size} | 
+                        <strong>التاريخ:</strong> ${file.uploadDate}
+                    </div>
+                    <button class="download-btn" onclick="downloadFile('${file.fileName}')">
+                        تحميل الملف
+                    </button>
+                `;
+                filesGrid.appendChild(fileCard);
+            });
+        }
+
+        // دالة محاكاة التحميل
+        function downloadFile(fileName) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.className = 'alert success';
+            messageDiv.textContent = `جاري تحميل الملف: ${fileName} ... (هذه محاكاة للتحميل)`;
+            
+            // إخفاء الرسالة بعد 3 ثوان
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // دالة البحث (يمكن إضافتها لاحقاً)
+        function searchFiles(query) {
+            const filteredFiles = pdfFiles.filter(file => 
+                file.title.includes(query) || file.description.includes(query)
+            );
+            return filteredFiles;
+        }
+
+        // تهيئة الصفحة عند التحميل
+        document.addEventListener('DOMContentLoaded', function() {
+            displayFiles();
+            
+            // إضافة تأثيرات عند التمرير
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // مراقبة عناصر الملفات
+            setTimeout(() => {
+                document.querySelectorAll('.file-card').forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    observer.observe(card);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
